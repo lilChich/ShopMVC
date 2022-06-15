@@ -8,7 +8,6 @@ namespace ShopMVC.DAL.Entities
 {
     public class CompositionPurchase
     {
-        public int Id { get; set; }
         public int Amount { get; set; }
 
         public int PurchaseId { get; set; }
