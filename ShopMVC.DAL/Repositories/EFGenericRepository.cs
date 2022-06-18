@@ -65,6 +65,12 @@ namespace ShopMVC.DAL.Repositories
             }
         }
 
+        public virtual async Task CreateAsync(params TEntity[] data)
+        {
+            context.Set<TEntity>().AddRange(data);
+            await context.SaveChangesAsync();
+        }
+
         public virtual async Task SaveAsync()
         {
             await context.SaveChangesAsync();
@@ -79,6 +85,11 @@ namespace ShopMVC.DAL.Repositories
         public virtual async Task<IEnumerable<TEntity>> FindAsync(Expression<Func<TEntity, bool>> predicate)
         {
             return await dbSet.AsNoTracking().Where(predicate).ToListAsync();
+        }
+
+        public virtual async Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> predicate)
+        {
+            return await context.Set<TEntity>().FirstOrDefaultAsync(predicate);
         }
     }
 }

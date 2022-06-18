@@ -14,8 +14,10 @@ namespace ShopMVC.DAL.Interfaces
         Task<TEntity> GetByIdAsync(int id);
         Task<TEntity> GetByNameAsync(string name);
         //Task<TEntity> GetByEmailAsync(TEntity entity);
-        Task<IEnumerable<TEntity>> FindAsync(Expression<Func<TEntity, Boolean>> predicate);
+        Task<IEnumerable<TEntity>> FindAsync(Expression<Func<TEntity, bool>> predicate);
+        Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> predicate);
         Task CreateAsync(TEntity entity);
+        Task CreateAsync(params TEntity[] data);
         Task DeleteAsync(int id);
         Task DeleteByEmailAsync(TEntity entity);
         Task UpdateAsync(TEntity entity);
