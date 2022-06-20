@@ -46,6 +46,15 @@ namespace ShopMVC.DAL.Repositories
             return dbSet.AsNoTracking().ToList();
         }
 
+        public async Task<IEnumerable<TEntity>> GetPageAsync(int skip, int page, Expression<Func<TEntity, bool>> predicate = null)
+        {
+            if (predicate == null)
+            {
+                return await context.Set<TEntity>().Skip(skip).Take(page).ToListAsync();
+            }
+            return await context.Set<TEntity>().Where(predicate).Skip(skip).Take(page).ToListAsync();
+        }
+
         public virtual async Task<TEntity> GetByIdAsync(int id)
         {
             return await dbSet.FindAsync(id);

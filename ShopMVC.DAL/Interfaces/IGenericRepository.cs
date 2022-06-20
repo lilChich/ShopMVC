@@ -9,7 +9,8 @@ namespace ShopMVC.DAL.Interfaces
 {
     public interface IGenericRepository<TEntity> where TEntity : class
     {
-        //Task<IEnumerable<TEntity>> GetAllAsync();
+        public Task<IEnumerable<TEntity>> GetPageAsync(int amount, int page, Expression<Func<TEntity, bool>> predicate);
+
         IEnumerable<TEntity> GetAll();
         Task<TEntity> GetByIdAsync(int id);
         Task<TEntity> GetByNameAsync(string name);
