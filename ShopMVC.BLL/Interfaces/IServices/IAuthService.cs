@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace ShopMVC.BLL.Interfaces.IServices
 {
-    interface IAuthService
+    public interface IAuthService
     {
         public Task<IdentityResult> AddUserAsync(UserDTO userDto, bool isPersistent);
         public Task<UserDTO> Login(UserDTO userDto);
@@ -24,6 +24,8 @@ namespace ShopMVC.BLL.Interfaces.IServices
         public Task<ApplicationUser> GetUserByIdAsync(int id);
 
         public Task<IdentityResult> DeleteUserAsync(ApplicationUser user);
+
+        public Task<IdentityResult> ChangePasswordAsync(UserDTO userDto, string currentPassword, string newPassword);
 
         public Task<int> GetUserByIdAsync(ClaimsPrincipal user);
     }

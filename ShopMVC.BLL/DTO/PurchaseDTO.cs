@@ -10,5 +10,7 @@ namespace ShopMVC.BLL.DTO
     {
         public int Id { get; set; }
         public DateTime Date { get; set; }
+
+        public List<ProductDTO> Products { get; set; }
     }
 }

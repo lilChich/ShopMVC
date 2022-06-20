@@ -113,6 +113,32 @@ namespace ShopMVC.BLL.Services
             return res;
         }
 
+        public async Task<IdentityResult> ChangePasswordAsync(UserDTO userDto, string currentPassword, string newPassword)
+        {
+            try
+            {
+                var user = await UserManager.FindByEmailAsync(userDto.Email);
+
+                if (user == null)
+                {
+                    throw new ValidationExceptions("Cannot find such a user", "");
+                }
+
+                var res = await UserManager.ChangePasswordAsync(user, currentPassword, newPassword);
+
+                if (!res.Succeeded)
+                {
+                    return res;
+                }
+
+                return res;
+            }
+            catch
+            {
+                throw new ValidationExceptions("Something goes wrong while updating", "");
+            }
+        }
+
         public async Task SignOut()
         {
             await SignInManager.SignOutAsync();
