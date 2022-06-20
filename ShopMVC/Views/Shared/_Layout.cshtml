@@ -1,4 +1,11 @@
-﻿<!DOCTYPE html>
+﻿
+@using Microsoft.AspNetCore.Identity;
+
+@using ShopMVC.DAL.Entities;
+@using ShopMVC.BLL.Interfaces.IServices;
+@inject SignInManager<ApplicationUser> signInManager;
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -6,8 +13,11 @@
     <title>@ViewData["Title"] - ShopMVC</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <link href="~/css/style.css" rel="stylesheet" asp-append-version="true" />
 </head>
 <body>
+    <img class="d-inline d-block position-fixed" src="~/images/gradienta1.jpg" alt="Alternate Text" />
+
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
@@ -24,6 +34,24 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
+
+                        @if (signInManager.IsSignedIn(User))
+                        {
+                            <li class="nav-item">
+                                <a id="header_nav" class="nav-link text-dark" asp-controller="Account" asp-action="MyProfile" style="width:auto">Account</a>
+                            </li>
+                            <li class="nav-item">
+                                <a id="header_nav" class="nav-link text-dark" asp-controller="Account" asp-action="Logout" style="width:auto">Logout</a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="Account" asp-action="Login">Log In</a>
+                            </li>
+                        }
+
+
                     </ul>
                 </div>
             </div>
