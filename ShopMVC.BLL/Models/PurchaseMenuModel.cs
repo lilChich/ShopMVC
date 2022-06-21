@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ShopMVC.BLL.Models
 {
-    class PurchaseMenuModel
+    public class PurchaseMenuModel
     {
         public IEnumerable<PurchaseDTO> Purchases { get; set; }
         public PageModel PageModel { get; set; }

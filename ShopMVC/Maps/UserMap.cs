@@ -18,7 +18,7 @@ namespace Skillap.MVC.Maps
                 .ReverseMap();
 
             CreateMap<ApplicationUser, UserDTO>()
-                .ForMember(DO => DO.Id, opt => opt.MapFrom(DTO => DTO.Id))
+                
                 .ForMember(DO => DO.FirstName, opt => opt.MapFrom(DTO => DTO.FirstName))
                 .ForMember(DO => DO.SecondName, opt => opt.MapFrom(DTO => DTO.SecondName))
                 .ForMember(DO => DO.DateOfBirth, opt => opt.MapFrom(DTO => DTO.DateOfBirth))

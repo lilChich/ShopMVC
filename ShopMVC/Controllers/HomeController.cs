@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using ShopMVC.BLL.Interfaces.IServices;
+using ShopMVC.BLL.Models;
 using ShopMVC.Models;
 using System;
 using System.Collections.Generic;
@@ -12,15 +14,18 @@ namespace ShopMVC.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IShopService shopService;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IShopService shopService)
         {
             _logger = logger;
+            this.shopService = shopService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index(int? type, string name, int page = 1, SortType sort = SortType.PriceAsc)
         {
-            return View();
+            var viewModel = await shopService.LoadProductsAsync(type, name, page, sort, 3);
+            return View(viewModel);
         }
 
         public IActionResult Privacy()

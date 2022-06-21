@@ -1,8 +1,106 @@
-﻿@{
+﻿@using ShopMVC.BLL.DTO
+@using ShopMVC.BLL.Models
+@using ShopMVC.DAL.Entities
+@model ProductMenuModel
+@{ 
     ViewData["Title"] = "Home Page";
+    Layout = "~/Views/Shared/_ProductCartLayout.cshtml";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<form method="get">
+    <div class="row">
+        <div class="col-md-6">
+            <label for="name" class="form-label">Find by name: </label>
+            <input id="name" name="name" value="@Model.FilterViewModel.SelectedName" class="form-control" />
+        </div>
+        <div class="col-md-4">
+            <label for="type" class="form-label">Categories: </label>
+            <select name="type" id="type" class="form-control">
+                <option selected="selected" value="">All</option>
+                @foreach (var item in Html.GetEnumSelectList<TypeOfProduct>())
+                {
+
+                    if (item.Value.CompareTo(Model.FilterViewModel.SelectedType?.ToString()) == 0)
+                    {
+                        <option selected value="@item.Value">@item.Text</option> 
+                    }
+                    else
+                    {
+                        <option value="@item.Value">@item.Text</option>
+                    }
+                }
+
+            </select>
+        </div>
+        <div class="col-md-2">
+            <label style="opacity:0" for="button" class="form-label">Categories: </label>
+            <input id="button" type="submit" value="Filter" class="btn btn-outline-dark col" />
+        </div>
+    </div>
+</form>
+<br />
+<table class="table">
+    <tr>
+        <th>
+            <a asp-action="Index"
+               asp-route-sort="@(Model.SortViewModel.NameSort)"
+               asp-route-name="@(Model.FilterViewModel.SelectedName)"
+               asp-route-type="@(Model.FilterViewModel.SelectedType)">Name</a>
+        </th>
+        <th>
+            <a asp-action="Index" asp-route-sort="@(Model.SortViewModel.PriceSort)"
+               asp-route-name="@(Model.FilterViewModel.SelectedName)"
+               asp-route-type="@(Model.FilterViewModel.SelectedType)">Price</a>
+        </th>
+        <th>
+            Manufacturer
+        </th>
+        <th>
+            Category
+        </th>
+        <th>
+            Description
+        </th>
+    </tr>
+   @foreach (ProductDTO p in Model.Products)
+    {
+        <tr>
+            <td> @p.Name</td>
+            <td> @p.Price</td>
+            <td> @p.Manufacturer</td>
+            <td> @p.Type.ToString()</td>
+            <td> @p.Description</td>
+            <td class="row">
+                <a asp-controller="User" asp-action="AddProduct" asp-route-id="@p.Id" class="btn btn-success col">Buy</a>
+            </td>
+        </tr>
+    }
+</table>
+<div class="row">
+    @if (Model.PageViewModel.HasPreviousPage)
+    {
+        <div class="col-md-2">
+            <a asp-action="Index"
+               asp-route-page="@(Model.PageViewModel.PageNumber - 1)"
+               asp-route-name="@(Model.FilterViewModel.SelectedName)"
+               asp-route-sort="@(Model.SortViewModel.Current)"
+               asp-route-type="@(Model.FilterViewModel.SelectedType)"
+               class="btn  btn-outline-dark col">
+                Back
+            </a>
+        </div>
+    }
+    @if (Model.PageViewModel.HasNextPage)
+    {
+        <div class="col-md-2">
+            <a asp-action="Index"
+               asp-route-page="@(Model.PageViewModel.PageNumber + 1)"
+               asp-route-name="@(Model.FilterViewModel.SelectedName)"
+               asp-route-sort="@(Model.SortViewModel.Current)"
+               asp-route-type="@(Model.FilterViewModel.SelectedType)"
+               class="btn btn-outline-dark col">
+                Next
+            </a>
+        </div>
+    }
 </div>

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ShopMVC.BLL.Models
 {
-    class PageModel
+    public class PageModel
     {
         public int PageNumber { get; private set; }
         public int TotalPages { get; private set; }

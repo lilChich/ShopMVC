@@ -1,0 +1,98 @@
+﻿@model ShopMVC.BLL.Models.PurchaseMenuModel
+@{
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+    ViewData["Title"] = "History";
+}
+
+
+<table class="table mt-5">
+    <thead>
+        <tr>
+            <th>
+                Id Purchase
+            </th>
+            <th>
+                Date
+            </th>
+            <th>
+                Name of Product
+            </th>
+            <th>
+                Price
+            </th>
+            <th>
+                Amount
+            </th>
+            <th>
+                Sum
+            </th>
+            <th>
+                Total
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Purchases)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Date)
+                </td>
+            </tr>
+            @foreach (var product in item.Products)
+            {
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td>@product.Name</td>
+                    <td>@product.Price</td>
+                    <td>@product.Amount</td>
+                    <td>
+                        @{
+                            decimal sum = @product.Price * product.Amount;
+                        }
+                        @sum
+                    </td>
+
+                </tr>
+
+            }
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>@item.Total</td>
+            </tr>
+        }
+    </tbody>
+</table>
+<div class="row">
+    @if (Model.PageModel.HasPreviousPage)
+    {
+        <div class="col-md-2">
+            <a asp-action="History"
+               asp-route-page="@(Model.PageModel.PageNumber - 1)"
+               class="btn  btn-outline-dark col">
+                Previous
+            </a>
+        </div>
+
+    }
+    @if (Model.PageModel.HasNextPage)
+    {
+        <div class="col-md-2">
+            <a asp-action="History"
+               asp-route-page="@(Model.PageModel.PageNumber + 1)"
+               class="btn btn-outline-dark col">
+                Next
+            </a>            
+        
+        </div>
+    }
+</div>

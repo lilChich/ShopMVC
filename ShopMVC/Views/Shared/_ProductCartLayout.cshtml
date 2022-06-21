@@ -12,11 +12,10 @@
 
                     @if (User.IsInRole("User"))
                     {
-                        <li class="nav-item"><a class="nav-link" asp-controller="Account" asp-action="MyProfile">Profile</a></li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="History">Payment History</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Items</a>
                         </li>
-                        <li class="nav-item"><a class="nav-link" asp-controller="Account" asp-action="UpdateUser">Settings</a></li>
+                        <li class="nav-item"><a class="nav-link" asp-controller="User" asp-action="Basket">Basket</a></li>
                     }
 
                 </ul>
@@ -25,13 +24,13 @@
             <div class="card-body">
                 <div class="container">
                     <div class="row">
-                        
+
                         <div class="col">
                             @RenderBody()
                         </div>
                     </div>
                 </div>
-            </div>        
+            </div>
         </div>
     </div>
 </div>

@@ -69,11 +69,15 @@ namespace ShopMVC
             });
 
             services.AddScoped<IAuthService, AuthorizationService>();
+            services.AddScoped<IPurchaseService, PurchaseService>();
+            services.AddScoped<IShopService, ShopService>();
 
             services.AddScoped<IUnitOfWork, EFUnitOfWork>();
             services.AddScoped<UserManager<ApplicationUser>>();
             services.AddScoped<SignInManager<ApplicationUser>>();
             services.AddScoped<RoleManager<ApplicationRole>>();
+
+            services.AddSession();
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["TokenKey"]));
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -116,6 +120,8 @@ namespace ShopMVC
             app.UseAuthentication();
 
             app.UseAuthorization();
+
+            app.UseSession();
 
 
             app.UseEndpoints(endpoints =>
