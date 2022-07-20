@@ -8,14 +8,14 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
-using ShopMVC.BLL.Infrastructure.Security;
 using ShopMVC.BLL.Interfaces.IServices;
-using ShopMVC.BLL.Interfaces.JWT;
 using ShopMVC.BLL.Services;
 using ShopMVC.DAL;
 using ShopMVC.DAL.Entities;
 using ShopMVC.DAL.Interfaces;
 using ShopMVC.DAL.Repositories;
+using ShopMVC.Security;
+using ShopMVC.Security.JWT;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -68,18 +68,21 @@ namespace ShopMVC
                 options.User.RequireUniqueEmail = true;
             });
 
+            services.AddScoped<ICompositionPurchaseRepository, CompositionPurchaseRepository>();
+            services.AddScoped<IPurchaseRepository, PurchaseRepository>();
+            services.AddScoped<IProductRepository, ProductRepository>();
+
             services.AddScoped<IAuthService, AuthorizationService>();
             services.AddScoped<IPurchaseService, PurchaseService>();
             services.AddScoped<IShopService, ShopService>();
 
-            services.AddScoped<IUnitOfWork, EFUnitOfWork>();
             services.AddScoped<UserManager<ApplicationUser>>();
             services.AddScoped<SignInManager<ApplicationUser>>();
             services.AddScoped<RoleManager<ApplicationRole>>();
 
             services.AddSession();
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["TokenKey"]));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["TokenKey1"]));
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(
                     opt =>
@@ -95,7 +98,6 @@ namespace ShopMVC
                 );
 
             services.AddScoped<IJwtGenerator, JwtGenerator>();
-
             services.AddControllersWithViews();
         }
 

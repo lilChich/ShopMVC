@@ -5,9 +5,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ShopMVC.BLL.DTO;
 using ShopMVC.BLL.Interfaces.IServices;
-using ShopMVC.BLL.Interfaces.JWT;
 using ShopMVC.DAL.Entities;
 using ShopMVC.DAL.Interfaces;
+using ShopMVC.Security.JWT;
 using ShopMVC.ViewModels;
 using Skillap.BLL.Exceptions;
 using Skillap.MVC.ViewModels;
@@ -23,28 +23,25 @@ namespace ShopMVC.Controllers
     public class AccountController : Controller
     {
         private readonly IAuthService userService;
-        private readonly IJwtGenerator jwtGenerator;
         private readonly IMapper mapper;
-        private readonly IUnitOfWork UoW;
         private readonly UserManager<ApplicationUser> appUser;
         private readonly IHostingEnvironment hostingEnvironment;
         private readonly SignInManager<ApplicationUser> signInManager;
+        private readonly IJwtGenerator jwtGenerator;
 
         public AccountController(IAuthService UserService,
                    IMapper Mapper,
-                   IUnitOfWork uow,
-                   IJwtGenerator jwtGenerator,
                    UserManager<ApplicationUser> AppUser,
                    SignInManager<ApplicationUser> signInManager,
-                   IHostingEnvironment hostingEnvironment)
+                   IHostingEnvironment hostingEnvironment,
+                   IJwtGenerator jwtGenerator)
         {
             userService = UserService;
             mapper = Mapper;
-            UoW = uow;
             appUser = AppUser;
             this.hostingEnvironment = hostingEnvironment;
-            this.jwtGenerator = jwtGenerator;
             this.signInManager = signInManager;
+            this.jwtGenerator = jwtGenerator;
         }
 
         [HttpGet]
@@ -80,16 +77,27 @@ namespace ShopMVC.Controllers
                 return View(loginViewModel);
             }
 
-            var user = new UserDTO()
+            var user = await appUser.FindByEmailAsync(loginViewModel.Email);
+
+            if (user == null)
+            {
+                ModelState.AddModelError("", "Cannot find such a user");
+                return View(loginViewModel);
+            }
+
+            var mappedUser = mapper.Map<UserDTO>(user);
+
+            var userDto = new UserDTO()
             {
                 Email = loginViewModel.Email,
                 Password = loginViewModel.Password,
-                RememberMe = loginViewModel.RememberMe
+                RememberMe = loginViewModel.RememberMe,
+                Token = jwtGenerator.CreateToken(mappedUser)
             };
 
             try
             {
-                var res = await userService.Login(user);
+                var res = await userService.Login(userDto);
                 if (res.Token != null)
                 {
                     return RedirectToAction("Index", "Home");

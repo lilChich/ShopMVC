@@ -18,7 +18,7 @@ namespace ShopMVC.Controllers
         [HttpGet]
         public async Task<IActionResult> History(int page = 1)
         {
-            var purchases = await purchaseService.GetPurchasesAsync(User.Identity.Name, page, 3);
+            var purchases = await purchaseService.GetPurchaseMenuModelAsync(User.Identity.Name, page, 3);
             return View(purchases);
         }
     }
