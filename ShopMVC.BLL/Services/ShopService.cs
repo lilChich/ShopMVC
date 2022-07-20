@@ -14,18 +14,18 @@ namespace ShopMVC.BLL.Services
 {
     public class ShopService : IShopService
     {
-        private readonly IUnitOfWork uow;
+        private readonly IProductRepository productRepos;
         public IMapper Mapper { get; set; }
 
-        public ShopService(IUnitOfWork uow, IMapper Mapper)
+        public ShopService(IProductRepository productRepos, IMapper Mapper)
         {
-            this.uow = uow;
+            this.productRepos = productRepos;
             this.Mapper = Mapper;
         }
 
         public async Task<ProductMenuModel> LoadProductsAsync(int? type, string name, int page = 1, SortType sort = SortType.PriceAsc, int amountOfElementOnPage = 3)
         {
-            var products = await uow.Products.FindAsync(i => true);
+            var products = await productRepos.GetAsync(i => true);
             if (type != null)
             {
                 TypeOfProduct typeProduct = (TypeOfProduct)Enum.ToObject(typeof(TypeOfProduct), type);

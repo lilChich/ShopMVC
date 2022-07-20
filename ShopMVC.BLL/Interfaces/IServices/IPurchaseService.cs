@@ -12,6 +12,6 @@ namespace ShopMVC.BLL.Interfaces.IServices
     {
         public Task<bool> BuyAsync(PurchaseDTO purchaseDto, List<ProductDTO> products);
         public Task<ProductDTO> GetProductByIdAsync(int id);
-        public Task<PurchaseMenuModel> GetPurchasesAsync(string email, int page, int amountOfElementsOnPage);
+        public Task<PurchaseMenuModel> GetPurchaseMenuModelAsync(string email, int page, int amountOfElementsOnPage);
     }
 }

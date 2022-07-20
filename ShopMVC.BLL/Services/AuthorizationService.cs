@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Identity;
 using ShopMVC.BLL.DTO;
 using ShopMVC.BLL.Interfaces.IServices;
-using ShopMVC.BLL.Interfaces.JWT;
 using ShopMVC.DAL;
 using ShopMVC.DAL.Entities;
 using ShopMVC.DAL.Interfaces;
@@ -19,27 +18,22 @@ namespace ShopMVC.BLL.Services
     public class AuthorizationService : IAuthService
     {
         public IMapper Mapper { get; set; }
-        public IUnitOfWork UoW { get; set; }
-        public IJwtGenerator jwtGenerator { get; set; }
         public DataContext Context { get; set; }
         public UserManager<ApplicationUser> UserManager { get; set; }
         public SignInManager<ApplicationUser> SignInManager { get; set; }
         public RoleManager<ApplicationRole> RoleManager { get; set; }
 
-        public AuthorizationService(IMapper mapper, IUnitOfWork uow,
-            IJwtGenerator jwtGenerator,
+        public AuthorizationService(IMapper mapper,
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             RoleManager<ApplicationRole> roleManager,
             DataContext context)
         {
             Mapper = mapper;
-            UoW = uow;
             UserManager = userManager;
             SignInManager = signInManager;
             RoleManager = roleManager;
             Context = context;
-            this.jwtGenerator = jwtGenerator;
         }
 
         public async Task<UserDTO> Login(UserDTO userDto)
@@ -62,7 +56,7 @@ namespace ShopMVC.BLL.Services
                         FirstName = user.FirstName,
                         SecondName = user.SecondName,
                         DateOfBirth = user.DateOfBirth,
-                        Token = jwtGenerator.CreateToken(user),
+                        Token = userDto.Token,
                         Image = user.Image
                     };
                 }
@@ -155,8 +149,6 @@ namespace ShopMVC.BLL.Services
                 return new UserDTO();
             }
         }
-
-        public async Task<ApplicationUser> GetUserByIdAsync(int id) => (await UoW.ApplicationUsers.GetByIdAsync(id));
 
         public async Task<int> GetUserByIdAsync(ClaimsPrincipal user) => (await UserManager.GetUserAsync(user)).Id;
 

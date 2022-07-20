@@ -21,7 +21,6 @@ namespace ShopMVC.BLL.Interfaces.IServices
         public Task<UserDTO> GetUserClaimsAsync(ApplicationUser user);
         public Task<UserDTO> GetUserRoleAsync(ApplicationUser user);
         public Task<bool> UpdateUserAsync(UserDTO userDto);
-        public Task<ApplicationUser> GetUserByIdAsync(int id);
 
         public Task<IdentityResult> DeleteUserAsync(ApplicationUser user);
 

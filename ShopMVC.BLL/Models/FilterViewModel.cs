@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace ShopMVC.BLL.Models
 {
-    public class FilterViewModel
+    /*public class FilterViewModel
     {
         public FilterViewModel(int? type, string name)
         {
@@ -14,5 +14,7 @@ namespace ShopMVC.BLL.Models
         }
         public int? SelectedType { get; private set; }
         public string SelectedName { get; private set; }
-    }
+    }*/
+
+    public record FilterViewModel(int? SelectedType, string SelectedName);
 }
