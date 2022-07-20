@@ -15,7 +15,7 @@
 
 function addValue(amount) {
     var xmlhttp = new XMLHttpRequest();
-    var url = "/User/ChangeProduct";
+    var url = "/Basket/ChangeProduct";
     xmlhttp.open("POST", url);
     xmlhttp.setRequestHeader("Content-type", "application/json");
     var value = amount;

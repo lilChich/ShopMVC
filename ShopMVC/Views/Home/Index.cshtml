@@ -71,7 +71,7 @@
             <td> @p.Type.ToString()</td>
             <td> @p.Description</td>
             <td class="row">
-                <a asp-controller="User" asp-action="AddProduct" asp-route-id="@p.Id" class="btn btn-success col">Buy</a>
+                <a asp-controller="Basket" asp-action="AddProduct" asp-route-id="@p.Id" class="btn btn-success col">Buy</a>
             </td>
         </tr>
     }
